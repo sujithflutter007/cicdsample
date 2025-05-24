@@ -13,11 +13,6 @@ workflows:
 
       - name: Get Flutter dependencies
         script: flutter pub get --offline
-      - name: Prewarm Flutter packages
-        script: |
-         flutter pub get
-         flutter pub cache repair
-
 
       - name: Build Android APK with full logs
         script: |
