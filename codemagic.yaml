@@ -1,8 +1,4 @@
 workflows:
-  cache_paths:
-    - ~/.pub-cache
-    - .dart_tool
-    - pubspec.lock
   android-debug-simple:
     name: Simple Android Debug Build
     instance_type: mac_mini_m1
