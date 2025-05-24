@@ -1,37 +1,40 @@
-name: Flutter CI
+workflows:
+  cache_paths:
+    - ~/.pub-cache
+    - .dart_tool
+    - pubspec.lock
+  android-debug-simple:
+    name: Simple Android Debug Build
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      java: 17
+      cache:
+    scripts:
+      - name: Print Flutter and Java version
+        script: |
+          flutter --version
+          java -version
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+      - name: Get Flutter dependencies
+        script: flutter pub get --offline
+      - name: Prewarm Flutter packages
+        script: |
+         flutter pub get
+         flutter pub cache repair
 
-jobs:
-  flutter-ci:
-    name: Build and Test Flutter App
-    runs-on: macos-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Build Android APK with full logs
+        script: |
+          flutter build apk --release --verbose || {
+            echo "Build failed with exit code $?"
+            exit 1
+          }
 
-    - name: Install Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.22.0'
-        cache: true
+    artifacts:
+      - build/app/outputs/**/*.apk
 
-    - name: Install dependencies
-      run: flutter pub get
-
-    - name: Analyze code
-      run: flutter analyze
-
-    - name: Run tests
-      run: flutter test
-
-    - name: Build Android APK
-      run: flutter build apk --debug
-
-    - name: Build iOS (no codesign)
-      run: flutter build ios --no-codesign
+publishing:
+  email:
+    recipients:
+      - sujith.ks@wayvida.com
