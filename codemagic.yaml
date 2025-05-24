@@ -1,0 +1,37 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.13.0'  # Update as needed
+        cache: true
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run static analysis
+      run: flutter analyze
+
+    - name: Run unit tests
+      run: flutter test
+
+    - name: Build Android APK
+      run: flutter build apk --debug
+
+    - name: Build iOS app
+      run: flutter build ios --no-codesign
