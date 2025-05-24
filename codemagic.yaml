@@ -5,7 +5,6 @@ workflows:
     environment:
       flutter: stable
       java: 17
-      cache:
     scripts:
       - name: Print Flutter and Java version
         script: |
