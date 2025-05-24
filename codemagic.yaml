@@ -7,31 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  flutter-ci:
+    name: Build and Test Flutter App
     runs-on: macos-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Setup Flutter
+    - name: Install Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.13.0'  # Update as needed
+        flutter-version: '3.22.0'
         cache: true
 
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Run static analysis
+    - name: Analyze code
       run: flutter analyze
 
-    - name: Run unit tests
+    - name: Run tests
       run: flutter test
 
     - name: Build Android APK
       run: flutter build apk --debug
 
-    - name: Build iOS app
+    - name: Build iOS (no codesign)
       run: flutter build ios --no-codesign
