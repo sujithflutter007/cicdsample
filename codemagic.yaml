@@ -20,8 +20,7 @@ workflows:
             echo "Build failed with exit code $?"
             exit 1
           }
-    dev_dependencies:
-     flutter_lints: ^5.0.0
+  
 
     artifacts:
       - build/app/outputs/**/*.apk
